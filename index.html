@@ -165,13 +165,13 @@
       <!-- Visual Effects. -->
       <div class="column">
         <div class="content">
-          <h2 class="title is-3">One-shot Scenes Interaction</h2>
+          <h2 class="title is-3">Proposal 1: One-shot Scenes Interaction</h2>
           <p>
             <strong>TL; DR</strong> One-shot in this context means to estimate the depth information from a single image, and further use this 3D scene information to achieve interactions. Furthermore, combining this with the language-guided human motion generation methods can further extend scene affordance.
             <br><br>
-            <strong>Human interaction with one-shot scenes provided by monocular depth estimation.</strong> We employ a monocular depth estimation method to generate the RGB point cloud, which is particularly suitable for scenarios with no multi-view or depth camera for 3D reconstruction. Results below are based on an image found from the <a href="https://th.bing.com/th/id/OIP.1od5x1HHSbNB0TOLZVGHgwHaE8?w=270&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7">Internet</a>, and there is only one frame for inference. We generate depth image using the LCM version of <a href="https://github.com/prs-eth/Marigold">Marigold</a> and convert it to RGB point cloud using <a href="https://github.com/isl-org/Open3D">Open3D</a>. Code is availeble at . We use <a href="https://github.com/GuyTevet/motion-diffusion-model">MDM</a> to generate language-guided human actions, but in the following examples we use <a href="https://www.mixamo.com/">mixamo</a>'s publicly available actions because it is more stable for demo-only use.
+            <strong>Human interaction with one-shot scenes provided by monocular depth estimation.</strong> We employ a monocular depth estimation method to generate the RGB point cloud, which is particularly suitable for scenarios with no multi-view or depth camera for 3D reconstruction. Results below are based on an image found from the <a href="https://th.bing.com/th/id/OIP.1od5x1HHSbNB0TOLZVGHgwHaE8?w=270&h=180&c=7&r=0&o=5&dpr=1.5&pid=1.7">Internet</a>, and there is only one frame for inference. We generate depth image using the LCM version of <a href="https://github.com/prs-eth/Marigold">Marigold</a> and convert it to RGB point cloud using <a href="https://github.com/isl-org/Open3D">Open3D</a>. Code is availeble at <a href="https://github.com/Arkitect-z/monocular_scene_interact.github.io/tree/main/static/code">code</a>. We use <a href="https://github.com/GuyTevet/motion-diffusion-model">MDM</a> to generate language-guided human actions, but in the following examples we use <a href="https://www.mixamo.com/">Mixamo</a>'s publicly available actions because it is more stable for demo-only use. The human motion scene in the 3D point cloud shown in the video is rendered in Blender.
             <br>
-            <strong>Note that all the examples on this page are for demonstration purposes only, not research outcomes.</strong>
+            <strong>Note that all the examples on this page are for demonstration purposes only.</strong>
           </p>
           <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
             <source src="./static/videos/monocular_interact.mp4"
@@ -182,6 +182,16 @@
           </h5>
           <img src="./static/images/3.png" style="width: 80%; margin: auto; display: block;">
           <img src="./static/images/2.png" style="width: 80%; margin: auto; display: block;">
+          <br>
+          <p>
+            <strong>Is the generated 3D point cloud accurate?</strong>
+            <br>
+            The 3D point cloud is generated from the depth map obtained from the one-shot image by monocular depth estimation, which means it can only represent 3D scene information under the current viewing angle if no other help is available. Nonetheless, this still allows us to create more complex scenes based on simple 2D images.
+            <br><br>
+            <strong>What are the consequences of the absence of multi-view information?</strong>
+            <br>
+            The treatment of occluded regions remains unexplored. A simple example is the difficulty of telling where the horizon is behind the campus signage in the demo above, which can be a problem for interaction. However, in this scenario language instructions are also given via the 2D image, which is more friendly for specific interactions in the occluded area.
+          </p>
         </div>
       </div>
       <!--/ Visual Effects. -->
@@ -206,11 +216,23 @@
     </div>
     <!--/ Matting. -->
 
-
-
+    <!-- Visual Effects. -->
+    <div class="column">
+      <div class="content">
+        <h2 class="title is-3">Proposal 2: How depth estimation helps 3D reconstruction</h2>
+        <p>
+          <strong>TL; DR</strong> We propose to enhance the noisy sparse depth input from estimated depth to support the NeRF optimization.
+          <br><br>
+          Roessle, B. et al. (CVPR2022) leverage dense depth priors to constrain NeRF optimization. Firstly, they utilize sparse depth data freely available from the Structure from Motion (SfM) preprocessing step to estimate the camera pose. Then they use depth completion to convert these sparse points into dense depth maps and uncertainty estimates, which are used to guide NeRF optimisation <a href="https://barbararoessle.github.io/dense_depth_priors_nerf/">[1]</a>. A successful reconstruction from RGB images requires a large number of input views taken under static conditions, method with dense depth prior enables data-efficient novel view synthesis with less than 20 images, as opposed to 100+ images required before.
+          <br><br>
+          Simply using the depth map to regularize all parameters would cause over-smooth and blurry details in 3D Gaussian Radiance Fields. Jiahe Li et al. (CVPR 2024) propose DNGaussian, they propose the Hard and Soft Depth Regularization that achieves a balance between accurate geometry and delicate appearance. And the Global-Local Depth Normalization proposed by them refocuses on local depth differences, eliminates small depth errors and thus helping build a clean surface <a href="https://fictionarry.github.io/DNGaussian/">[2]</a>.
+        </p>
+        <img src="./static/images/P2_1.png" style="margin: auto; display: block;">
+      </div>
+    </div>
 
     <!-- Concurrent Work. -->
-    <div class="columns is-centered">
+    <!-- <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Related Links</h2>
 
@@ -233,7 +255,7 @@
           </p>
         </div>
       </div>
-    </div>
+    </div> -->
     <!--/ Concurrent Work. -->
 
   </div>
