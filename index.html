@@ -224,10 +224,11 @@
           <strong>TL; DR</strong> We propose to enhance the noisy sparse depth input from estimated depth to support the NeRF optimization.
           <br><br>
           Roessle, B. et al. (CVPR2022) leverage dense depth priors to constrain NeRF optimization. Firstly, they utilize sparse depth data freely available from the Structure from Motion (SfM) preprocessing step to estimate the camera pose. Then they use depth completion to convert these sparse points into dense depth maps and uncertainty estimates, which are used to guide NeRF optimisation <a href="https://barbararoessle.github.io/dense_depth_priors_nerf/">[1]</a>. A successful reconstruction from RGB images requires a large number of input views taken under static conditions, method with dense depth prior enables data-efficient novel view synthesis with less than 20 images, as opposed to 100+ images required before.
-          <br><br>
+        </p>
+        <img src="./static/images/P2_1.png" style="margin: auto; display: block;"><br>
+        <p>
           Simply using the depth map to regularize all parameters would cause over-smooth and blurry details in 3D Gaussian Radiance Fields. Jiahe Li et al. (CVPR 2024) propose DNGaussian, they propose the Hard and Soft Depth Regularization that achieves a balance between accurate geometry and delicate appearance. And the Global-Local Depth Normalization proposed by them refocuses on local depth differences, eliminates small depth errors and thus helping build a clean surface <a href="https://fictionarry.github.io/DNGaussian/">[2]</a>.
         </p>
-        <img src="./static/images/P2_1.png" style="margin: auto; display: block;">
       </div>
     </div>
 
